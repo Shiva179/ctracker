@@ -6,7 +6,7 @@ import { fetchData } from './api';
 
 export default function App () {
     const [ data, setData ] = useState({});
-    const [ country, setCountry ] = useState('India');
+    const [ country, setCountry ] = useState('');
 
     useEffect(() => {
         const fetchAPI = async () => {
@@ -17,12 +17,20 @@ export default function App () {
         fetchAPI();        
     },[]);
 
+    const handleCountryChange = async(country) => {
+        const fetchedData = await fetchData(country);
+        setCountry(country);
+        setData(fetchedData)
+        
+    }
+
     return (
         <div className={styles.container}>
             <img className={styles.image} src='https://i.ibb.co/7QpKsCX/image.png' alt='COVID-19'></img>
             <Cards data={data}/>
-            <CountryPicker/>
+            <CountryPicker handleCountryChange={handleCountryChange} />
             <Chart data={data} country={country} />
         </div>
+
     )
 }
